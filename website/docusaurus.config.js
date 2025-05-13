@@ -28,7 +28,7 @@ const config = {
       myFont: ['Inter', 'sans-serif'],
     },
     REACT_APP_PUBLIC_POSTHOG_KEY: process.env.REACT_APP_PUBLIC_POSTHOG_KEY,
-    REACT_APP_PUBLIC_POSTHOG_HOST: process.env.REACT_APP_PUBLIC_POSTHOG_HOST
+    REACT_APP_PUBLIC_POSTHOG_HOST: process.env.REACT_APP_PUBLIC_POSTHOG_HOST,
   },
   themes: ['@saucelabs/theme-github-codeblock', '@docusaurus/theme-mermaid'],
   onBrokenLinks: 'throw',
@@ -86,6 +86,10 @@ const config = {
         modifyContent(filename, content) {
           return { filename, content: content.replace('{{', '').replace('<', '\\<') };
         },
+      },
+        'docusaurus2-dotenv',
+      {
+        systemvars: true,
       },
     ],
   ],
