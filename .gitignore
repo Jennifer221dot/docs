@@ -15,3 +15,5 @@ neardev
 serve*
 .vscode
 .env.local
+.env
+.nvm-node
