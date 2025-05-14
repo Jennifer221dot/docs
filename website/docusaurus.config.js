@@ -29,6 +29,8 @@ const config = {
     },
     REACT_APP_PUBLIC_POSTHOG_KEY: process.env.REACT_APP_PUBLIC_POSTHOG_KEY,
     REACT_APP_PUBLIC_POSTHOG_HOST: process.env.REACT_APP_PUBLIC_POSTHOG_HOST,
+    REACT_APP_PUBLIC_GLEAP_KEY: process.env.REACT_APP_PUBLIC_GLEAP_KEY,
+    NODE_ENV: process.env.NODE_ENV,
   },
   themes: ['@saucelabs/theme-github-codeblock', '@docusaurus/theme-mermaid'],
   onBrokenLinks: 'throw',
@@ -75,6 +77,13 @@ const config = {
     './src/plugins/node-polyfills',
     'docusaurus-plugin-sass',
     [
+      'docusaurus2-dotenv',
+      {
+        path: path.resolve(__dirname, '.env'),
+        systemvars: true,
+      },
+    ],
+    [
       'docusaurus-plugin-remote-content',
       {
         name: 'near-changelog',
@@ -86,10 +95,6 @@ const config = {
         modifyContent(filename, content) {
           return { filename, content: content.replace('{{', '').replace('<', '\\<') };
         },
-      },
-        'docusaurus2-dotenv',
-      {
-        systemvars: true,
       },
     ],
   ],

@@ -1,9 +1,15 @@
 import Gleap from "gleap"; // See https://gleap.io/docs/javascript/ and https://app.gleap.io/projects/62697858a4f6850036ae2e6a/widget
 
-
-export function initializeGleap(url, newTab) {
+export function initializeGleap(url, newTab, gleapSdkToken) {
     if (typeof window !== 'undefined') {
-        const gleapSdkToken = process.env.REACT_APP_PUBLIC_GLEAP_KEY;
+        
+        if (!gleapSdkToken) {
+            console.warn('initializeGleap: Gleap SDK token is not set. Gleap will not be initialized.');
+            return;
+        }
+        if (!url) {
+            url = window.location.href;
+        }
         if (!newTab) {
             newTab = false;
         }

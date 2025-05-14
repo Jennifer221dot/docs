@@ -21,10 +21,15 @@ function Root({ children, location }) {
       newTab = true;
     }
   }
-  // 'https://dev.near.org/'
+   // Set postMessageURL based on environment
+  const postMessageURL =
+    customFields.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : 'https://dev.near.org';
+
   useEffect(() => {
     // Pass message to dev.near.org (docs is embedded there)
-    const sendMessage = url => parent.postMessage({ type: 'urlChange', url }, 'http://localhost:3000');
+    const sendMessage = url => parent.postMessage({ type: 'urlChange', url }, postMessageURL);
     sendMessage(location.pathname);
 
     const unlisten = history.listen(loc => sendMessage(loc.pathname));
@@ -34,12 +39,27 @@ function Root({ children, location }) {
   useEffect(() => {
     if (isBrowser) {
 
-      //initialize Gleap
-      initializeGleap(location, newTab);
+      // check if token is set
+      const gleapSdkToken = customFields.REACT_APP_PUBLIC_GLEAP_KEY;
+      if (!gleapSdkToken) {
+        console.warn('Root: Gleap SDK token is not set. Gleap will not be initialized.');
+        // return;
+      }
+
+      // Initialize Gleap
+      initializeGleap(location, newTab, gleapSdkToken);
+
+      // check if posthog key and host are set
+      const posthogKey = customFields.REACT_APP_PUBLIC_POSTHOG_KEY;
+      const posthogHost = customFields.REACT_APP_PUBLIC_POSTHOG_HOST;
+      if (!posthogKey && !posthogHost) {
+        console.warn('Root: PostHog SDK key and host are not set. PostHog will not be initialized.');
+        // return;
+      }
 
       // Initialize PostHog
-      posthog.init(customFields.REACT_APP_PUBLIC_POSTHOG_KEY, {
-        api_host: customFields.REACT_APP_PUBLIC_POSTHOG_HOST,
+      posthog.init(posthogKey, {
+        api_host: posthogHost,
       });
 
       // Track initial page view

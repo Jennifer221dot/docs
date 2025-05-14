@@ -3,9 +3,12 @@
     "node": ">=18.0"
   },
   "scripts": {
+    "nvm": "~/.nvm/nvm-exec which node | xargs -J % ln -sf % ./.nvm-node && chmod +x ./.nvm-node",
     "full-test": "./test-links.sh test",
     "start": "docusaurus start",
+    "start:dev": "docusaurus serve --port 3000 --dir ./build --host localhost",
     "build": "docusaurus build",
+    "build:dev": "docusaurus build --dev",
     "build:preview": "docusaurus build --locale en",
     "swizzle": "docusaurus swizzle",
     "docusaurus": "docusaurus",
